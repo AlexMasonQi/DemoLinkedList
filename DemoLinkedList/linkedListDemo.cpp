@@ -126,7 +126,23 @@ int deleteNode(Demo *head,int index)
 		}
 		else
 		{
+			pre = head;
+			head = head->next;
+			free(pre);
+		}
+	}
+	else
+	{
+		if (getSize(head) > 0)
+		{
+			temp = head;
+			pre = head;
+			after = head;
+			while (temp->next != nullptr)
+			{
+				temp = temp->next;
 
+			}
 		}
 	}
 }

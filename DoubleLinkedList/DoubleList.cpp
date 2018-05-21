@@ -20,7 +20,7 @@ DoubleList::~DoubleList()
 
 int DoubleList::getIndex()
 {
-	return 0;
+	return index;
 }
 
 void DoubleList::setIndex(int index)
@@ -48,59 +48,74 @@ void DoubleList::setStr(string str)
 	this->str = str;
 }
 
-DoubleList& DoubleList::getPre()
+DoubleList* DoubleList::getPre()
 {
-	return *pre;
+	return pre;
 }
 
-void DoubleList::setPre(unique_ptr<DoubleList> & pre)
+void DoubleList::setPre(DoubleList * pre)
 {
-	this->pre = move(pre);
+	this->pre = pre;
 }
 
-DoubleList& DoubleList::getNext()
+DoubleList* DoubleList::getNext()
 {
-	return *next;
+	return next;
 }
 
-void DoubleList::setDoubleList(unique_ptr<DoubleList> & next)
+void DoubleList::setDoubleList(DoubleList * next)
 {
-	this->next = move(next);
+	this->next = next;
 }
 
-bool DoubleList::addNode(int data, string str)
+//add a node
+bool addNode(DoubleList *&address, int data, string str)
 {
 	bool result = false;
-	unique_ptr<DoubleList> node(new DoubleList(data,str));
-	if (node == nullptr)
-	{
-		cout << "error creating node!\n" << endl;
-		return result;
-	}
-	node->pre = nullptr;
-	node->next = nullptr;
-
-	DoubleList preNode = *this;
-	DoubleList temp = *this;
 	int index = 1;
+	DoubleList *temp = nullptr;
+	
+	//create a new node
+	DoubleList *newNode = new DoubleList;
+	newNode->index = 0;
+	newNode->data = data;
+	newNode->str = str;
+	newNode->pre = nullptr;
+	newNode->next = nullptr;
 
-	while (temp->next != nullptr)
+	if (address != nullptr)
 	{
-		temp = temp->next;
-		index++;
+		temp = address;
+		while (temp->next != nullptr)
+		{
+			index++;
+			temp = temp->next;
+		}
+		temp->next = newNode;
+		temp->next->index = index;
+		newNode->pre = temp;
+		result = true;
 	}
-	temp->next = node;
-	node->pre = temp;
-	temp->next->index = index;
-	result = true;
+	else
+	{
+		address = newNode;
+		address->index = 0;
+		address->data = data;
+		address->str = str;
+		address->pre = nullptr;
+		address->next = nullptr;
+		result = true;
+	}
+	
 
 	return result;
 }
 
-int DoubleList::getSize()
+//get size of list
+int getSize(DoubleList *address)
 {
 	int totalCount = 0;
-	DoubleList *temp = this;
+	DoubleList *temp = address;
 	while (temp != nullptr)
 	{
 		totalCount++;
@@ -110,22 +125,24 @@ int DoubleList::getSize()
 	return totalCount;
 }
 
-void DoubleList::traverseList()
+//traverse list
+void traverseList(DoubleList *address)
 {
-	DoubleList *temp = this;
+	DoubleList *temp = address;
 
 	while (temp != nullptr)
 	{
-		cout << "{index: " + temp->index << ", data: " + temp->data << ", str: " << temp->str << endl;
+		cout << "{index: " << temp->index << ", data: " << temp->data << ", str: " << temp->str << endl;
 		temp = temp->next;
 	}
 }
 
-DoubleList * DoubleList::getNode(int index)
+//get node from index
+DoubleList * getNode(DoubleList *address, int index)
 {
-	DoubleList *temp = this;
+	DoubleList *temp = address;
 	DoubleList *result = nullptr;
-	if (index > this->getSize())
+	if (index > getSize(address))
 	{
 		cout << "Index out of bounds exception!\n" << endl;
 		return nullptr;
@@ -143,27 +160,67 @@ DoubleList * DoubleList::getNode(int index)
 	return result;
 }
 
-DoubleList *DoubleList::remove(int index)
+//remove a node from index
+bool remove(DoubleList *&head, int index)
 {
-	if (index > this->getSize())
+	bool result = false;
+	if (index > getSize(head))
 	{
 		cout << "Index out of bounds exception!\n" << endl;
-		return nullptr;
+		return result;
 	}
-	DoubleList *temp = this;
-	unique_ptr<DoubleList> preNode(new DoubleList);
+	DoubleList *temp = head;
+	DoubleList *preNode = nullptr;
 	
 	//if remove head
 	if (index == 0)
 	{
-		if (this->next = nullptr)
+		if (temp->next != nullptr)
 		{
+			preNode = head;
+			head = head->next;
+			head->pre = nullptr;
+			delete preNode;
+			result = true;
+		}
+		else
+		{
+			delete head;
+			result = true;
+		}
+	}
+	else
+	{
+		while (temp != nullptr)
+		{
+			if (temp->index == index)
+			{
+				preNode = temp->pre;
+				preNode->next = temp->next;
+				temp->next->pre = preNode;
+				delete temp;
+				result = true;
+				break;
+			}
+			temp = temp->next;
 		}
 	}
 
-	return nullptr;
+	return result;
 }
 
-void DoubleList::removeAll()
+//clear the list
+int removeAll(DoubleList *&head)
 {
+	int deleteCount = 0;
+	DoubleList *preNode = head;
+	while (head != nullptr)
+	{
+		preNode = head;
+		head = head->next;
+		delete preNode;
+		deleteCount++;
+	}
+	
+	return deleteCount;
 }

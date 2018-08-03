@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MyArrayList.cpp">
+    <ClCompile Include="MyArrayList.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

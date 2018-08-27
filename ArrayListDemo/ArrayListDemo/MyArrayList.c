@@ -1,119 +1,144 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define MAXSIZE 10
 
 #include <stdio.h>
 #include <stdlib.h>
 
-
-//线性表结构体
-typedef struct MyList
+//定义线性表结构体
+typedef struct LinearTable
 {
-	int last;
-	char *data[13];
-}MyList;
+	int index;
+	int arr[MAXSIZE];
+}MyLinear;
 
-//创建一个空线性表
-MyList* createList()
+//建立空表
+MyLinear *createLinear()
 {
-	MyList *result = NULL;
-	result = (MyList *)malloc(sizeof(MyList));
-	result->last = -1;
+	MyLinear *result = (MyLinear *)malloc(sizeof(MyLinear));
+	result->index = -1;
+	
+	return result;
+}
+
+//插入元素
+void add(int ele, int i, MyLinear *linear)
+{
+	//检测表是否已满
+	if (linear->index == MAXSIZE - 1)
+	{
+		printf("该表已满\n");
+		return;
+	}
+
+	if (i == 0 && linear->index == -1)
+	{
+		linear->arr[i] = ele;
+		linear->index++;
+		return;
+	}
+	else
+	{
+		//检测下标是否越界
+		if (i < 0 || i > linear->index+2)
+		{
+			printf("下标越界\n");
+			return;
+		}
+	}
+
+	//插入操作
+	for (int j = linear->index; j >= i - 1; j--)
+	{
+		linear->arr[j + 1] = linear->arr[j];
+	}
+	linear->arr[i - 1] = ele;
+	linear->index++;
+}
+
+//删除元素
+void deleteEle(int i, MyLinear *linear)
+{
+	//检测下标是否越界
+	if (i < 0 || i > linear->index)
+	{
+		printf("下标越界\n");
+		return;
+	}
+
+	//检测表是否为空
+	if (linear->index == -1)
+	{
+		printf("该表是空的\n");
+		return;
+	}
+
+	//删除操作
+	for (int j = i; j < linear->index; j++)
+	{
+		linear->arr[j] = linear->arr[j + 1];
+	}
+	linear->index--;
+}
+
+//查找某元素第一次出现的位置
+int findEleFirstIndex(int ele, MyLinear *linear)
+{
+	int result = 0;
+	while (result <= linear->index && linear->arr[result] != ele)
+	{
+		result++;
+	}
+	if (result > linear->index)
+	{
+		printf("没有找到相应元素\n");
+		return -1;
+	}
 
 	return result;
 }
 
-//查找线性表元素出现的位置
-int findEleIndex(MyList *list, char *element)
+//查找某个位置的元素
+int findEle(int i, MyLinear *linear)
 {
-	int index = 0;
-	while (index <= list->last && list->data[index] == element)
+	//检测下标是否越界
+	if (i < 0 || i > linear->index)
 	{
-		index++;
+		printf("无此元素\n");
+		return;
 	}
-	if (index > list->last)
+	else
 	{
-		return -1;
+		return linear->arr[i];
 	}
-	return index;
 }
 
-//插入
-int addEle(MyList *list, char *element, int i)
+//获得线性表长度
+int length(MyLinear *linear)
 {
-	//判断线性表是否满了
-	if (list->last == 12)
-	{
-		printf("该表已满\n");
-		return -1;
-	}
-
-	//判断插入位置索引是否越界 
-	if (i<0 || i>list->last + 2)
-	{
-		printf("索引已越界\n");
-		return -1;
-	}
-
-	//插入元素
-	for (int j = list->last; j >= i - 1; j--)
-	{
-		//移位
-		list->data[j + 1] = list->data[j];
-	}
-	list->data[i - 1] = element;
-	list->last++;
-	return 1;
-}
-
-//删除
-int deleteEle(MyList *list, int index)
-{
-	//判断删除的位置索引是否越界 
-	if (index<0 || index>list->last + 2)
-	{
-		printf("索引已越界\n");
-		return -1;
-	}
-
-	for (int i = index; i < (list->last)+1; i++)
-	{
-		//移位
-		list->data[i] = list->data[i + 1];
-	}
-	list->last--;
-
-	return 1;
-}
-
-//线性表长度
-int length(MyList *list)
-{
-	return list->last + 1;
-}
-
-//根据索引index返回相应元素
-char *getEle(MyList *list, int index)
-{
-	return list->data[index];
-}
-
-void freeSpace(MyList *list)
-{
-	if (list != NULL)
-	{
-		free(list);
-		list = NULL;
-	}
+	return linear->index + 1;
 }
 
 int main()
 {
-	MyList *list = createList();
-	char *strArr[13] = { "p001","p002","p003","p004","p005","p006","p007","p008","p009","p010","p011","p012","p013"};
-	list->data = strArr;
+	MyLinear *test = createLinear();
+	add(1, 0, test);
+	add(2, 1, test);
+	add(3, 2, test);
+	add(4, 3, test);
+	add(5, 4, test);
+	add(9, 5, test);
 
-	for (int i = 0; i < 13; i++)
+	for (int i = 0; i < length(test); i++)
 	{
-		printf("%s\n", list->data[i]);
+		printf("arr[%d] = %d\n", i, findEle(i, test));
+	}
+
+	deleteEle(3, test);
+	printf("\n");
+
+	for (int i = 0; i < length(test); i++)
+	{
+		printf("arr[%d] = %d\n", i, findEle(i, test));
 	}
 
 	system("pause");

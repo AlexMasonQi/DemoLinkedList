@@ -11,40 +11,81 @@ typedef struct CycleLinkedList
 	struct CycleLinkedList *next;
 }CycleList;
 
-//创建链表
-void createList(CycleList **list)
+//遍历链表
+void forEach(CycleList *list)
 {
-	*list = (CycleList *)malloc(sizeof(CycleList));
-	(*list)->next = NULL;
-	(*list)->pre = NULL;
-	(*list)->data = -1;
+	CycleList *tmp = list;
+
+	while (tmp != NULL)
+	{
+		printf("%d ", tmp->data);
+		if (tmp->next == list)
+			break;
+		else
+			tmp = tmp->next;
+	}
+	printf("\n");
 }
 
-//插入节点
-void add(CycleList *list, int ele)
+//初始化链表
+void createList(CycleList **list)
 {
-	CycleList *head = list;
-	//判断是否是头节点
-	if (head->next == NULL && head->pre == NULL)
+	CycleList *head = (CycleList *)malloc(sizeof(CycleList));
+	head->pre = NULL;
+	head->next = head;
+	head->data = -1;
+	CycleList *tmp = NULL;
+
+	int num = -1;
+	printf("\n请输入数据:(输入一个数后请按Enter键键入下一个数)\n");
+	while (1)
 	{
-		head->data = ele;
+		scanf("%d", &num);
+		if (num == 0)
+			break;
+		
+		//判断是否是头节点
+		if (head->data == -1)
+		{
+			head->data = num;
+			tmp = head;
+		}
+		else
+		{
+			CycleList *node = (CycleList *)malloc(sizeof(CycleList));
+			tmp->next = node;
+			node->data = num;
+			node->pre = tmp;
+			node->next = head;
+			tmp = node;
+		}
 	}
-	else
+
+	if (num == 0)
 	{
-		CycleList *node = (CycleList *)malloc(sizeof(CycleList));
-		node->pre = NULL;
-		node->data = ele;
-		node->next = NULL;
+		//遍历
+		forEach(head);
+		*list = head;
+	}
+}
+
+//在指定位置前插入节点
+void add(CycleList **list, int position)
+{
+	CycleList *head = (*list);
+	while (head != NULL)
+	{
+
 	}
 }
 
 int main()
 {
-	CycleList *cycleList;
-	createList(&cycleList);
+	CycleList *list;
+	createList(&list);
 
-	printf("%d",cycleList->data);
-	
+	forEach(list);
+
 	system("pause");
 	return 0;
 }

@@ -27,6 +27,24 @@ void forEach(CycleList *list)
 	printf("\n");
 }
 
+//获取长度
+int length(CycleList *list)
+{
+	int len = 0;
+	CycleList *tmp = list;
+	while (tmp!=NULL)
+	{
+		len++;
+		if (tmp->next == list)
+		{
+			break;
+		}
+		tmp = tmp->next;
+	}
+
+	return len;
+}
+
 //初始化链表
 void createList(CycleList **list)
 {
@@ -37,12 +55,16 @@ void createList(CycleList **list)
 	CycleList *tmp = NULL;
 
 	int num = -1;
+	int tag = 0;
 	printf("\n请输入数据:(输入一个数后请按Enter键键入下一个数)\n");
 	while (1)
 	{
 		scanf("%d", &num);
+		tag++;
 		if (num == 0)
+		{
 			break;
+		}
 		
 		//判断是否是头节点
 		if (head->data == -1)
@@ -61,7 +83,7 @@ void createList(CycleList **list)
 		}
 	}
 
-	if (num == 0)
+	if (num == 0 && tag>1)
 	{
 		//遍历
 		forEach(head);
@@ -70,21 +92,51 @@ void createList(CycleList **list)
 }
 
 //在指定位置前插入节点
-void add(CycleList **list, int position)
+void add(CycleList **list, int position,int num)
 {
 	CycleList *head = (*list);
-	while (head != NULL)
+	CycleList *temp = head;
+	CycleList *newTmp = NULL;
+	int tmp = 0;
+	if (head != NULL)
 	{
+		while (temp != NULL)
+		{
+			//如果在头节点前添加
+			if (position == 0)
+			{
+				CycleList *node = (CycleList *)malloc(sizeof(CycleList));
+				node->pre = NULL;
+				node->data = num;
+				node->next = temp;
+				temp->pre = node;
+				head = node;
+				newTmp = head;
 
+				//尾节点的next指向新的头节点
+				while (newTmp!=NULL)
+				{
+
+				}
+			}
+			else
+			{
+				CycleList *node = (CycleList *)malloc(sizeof(CycleList));
+				node->pre = NULL;
+				node->data = num;
+				
+			}
+		}
 	}
 }
 
 int main()
 {
 	CycleList *list;
-	createList(&list);
-
-	forEach(list);
+	createList(&list); 
+	printf("%d\n",length(list));
+	add(&list, 0, 17);
+	forEach(&list);
 
 	system("pause");
 	return 0;

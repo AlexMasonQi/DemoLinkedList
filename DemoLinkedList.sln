@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tencent", "Tencent\Tencent.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CycleLinkedList", "CycleLinkedList\CycleLinkedList.vcxproj", "{3B730356-E00C-4F7D-8F38-B7AC37CE249D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestProject", "TestProject\TestProject.vcxproj", "{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{3B730356-E00C-4F7D-8F38-B7AC37CE249D}.Release|x64.Build.0 = Release|x64
 		{3B730356-E00C-4F7D-8F38-B7AC37CE249D}.Release|x86.ActiveCfg = Release|Win32
 		{3B730356-E00C-4F7D-8F38-B7AC37CE249D}.Release|x86.Build.0 = Release|Win32
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Debug|x64.ActiveCfg = Debug|x64
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Debug|x64.Build.0 = Debug|x64
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Debug|x86.ActiveCfg = Debug|Win32
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Debug|x86.Build.0 = Debug|Win32
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x64.ActiveCfg = Release|x64
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x64.Build.0 = Release|x64
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x86.ActiveCfg = Release|Win32
+		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

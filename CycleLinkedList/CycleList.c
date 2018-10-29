@@ -3,141 +3,171 @@
 #include <stdlib.h>
 #include <string.h>
 
-//定义一个循环链表结构体
+//define a struct
 typedef struct CycleLinkedList
 {
 	int data;
-	struct CycleLinkedList *pre;
+	struct CycleLinkedList *prev;
 	struct CycleLinkedList *next;
 }CycleList;
 
-//遍历链表
+//free memory
+void freeMem(CycleList *list)
+{
+	if (list != NULL)
+	{
+		free(list);
+		list = NULL;
+	}
+}
+
+//list the elements
 void forEach(CycleList *list)
 {
 	CycleList *tmp = list;
-
+	printf("\n===================遍历链表===================\n\n");
 	while (tmp != NULL)
 	{
 		printf("%d ", tmp->data);
 		if (tmp->next == list)
+		{
 			break;
+		}
 		else
+		{
 			tmp = tmp->next;
+		}
 	}
 	printf("\n");
 }
 
-//获取长度
-int length(CycleList *list)
+//init linkedlist
+int initList(CycleList **list)
 {
-	int len = 0;
-	CycleList *tmp = list;
-	while (tmp!=NULL)
+	CycleList *tmp = NULL;
+	int data = 0;
+
+	//judge the list is null or not
+	if (list == NULL)
 	{
-		len++;
-		if (tmp->next == list)
-		{
-			break;
-		}
-		tmp = tmp->next;
+		printf("NULL Pointer Exception!\n");
+		return -1;
 	}
 
-	return len;
-}
+	printf("请输入元素，按Enter键键入下一个元素，输入0结束输入\n");
 
-//初始化链表
-void createList(CycleList **list)
-{
+	//create the head node
 	CycleList *head = (CycleList *)malloc(sizeof(CycleList));
-	head->pre = NULL;
-	head->next = head;
+	head->prev = NULL;
 	head->data = -1;
-	CycleList *tmp = NULL;
+	head->next = *list;
 
-	int num = -1;
-	int tag = 0;
-	printf("\n请输入数据:(输入一个数后请按Enter键键入下一个数)\n");
 	while (1)
 	{
-		scanf("%d", &num);
-		tag++;
-		if (num == 0)
+		scanf("%d", &data);
+		if (data == 0)
 		{
 			break;
 		}
-		
-		//判断是否是头节点
 		if (head->data == -1)
 		{
-			head->data = num;
+			head->data = data;
 			tmp = head;
 		}
 		else
 		{
+			//create a new node
 			CycleList *node = (CycleList *)malloc(sizeof(CycleList));
-			tmp->next = node;
-			node->data = num;
-			node->pre = tmp;
+			node->data = data;
+			node->prev = tmp;
 			node->next = head;
+			tmp->next = node;
 			tmp = node;
 		}
 	}
-
-	if (num == 0 && tag>1)
+	if (data == 0)
 	{
-		//遍历
+		//list the elements
 		forEach(head);
 		*list = head;
 	}
+
+	return 0;
 }
 
-//在指定位置前插入节点
-void add(CycleList **list, int position,int num)
+int add(CycleList **list, int num)
 {
-	CycleList *head = (*list);
-	CycleList *temp = head;
-	CycleList *newTmp = NULL;
-	int tmp = 0;
-	if (head != NULL)
-	{
-		while (temp != NULL)
-		{
-			//如果在头节点前添加
-			if (position == 0)
-			{
-				CycleList *node = (CycleList *)malloc(sizeof(CycleList));
-				node->pre = NULL;
-				node->data = num;
-				node->next = temp;
-				temp->pre = node;
-				head = node;
-				newTmp = head;
+	
 
-				//尾节点的next指向新的头节点
-				while (newTmp!=NULL)
-				{
+	return 0;
+}
 
-				}
-			}
-			else
-			{
-				CycleList *node = (CycleList *)malloc(sizeof(CycleList));
-				node->pre = NULL;
-				node->data = num;
-				
-			}
-		}
-	}
+//init the screen
+void initScreen()
+{
+	printf("\n=====================循环链表=======================\n");
+	printf("\n请输入提示数字进行操作\n\n");
+	printf("1. 初始化链表\n\n");
+	printf("2. 插入元素\n\n");
+	printf("3. 删除元素\n\n");
+	printf("4. 返回元素索引\n\n");
+	printf("5. 遍历链表\n\n");
+	printf("0. 退出程序\n\n");
 }
 
 int main()
 {
-	CycleList *list;
-	createList(&list); 
-	printf("%d\n",length(list));
-	add(&list, 0, 17);
-	forEach(&list);
+	initScreen();
+	int option = 0;
+	CycleList *list = (CycleList *)malloc(sizeof(CycleList));
+	
+	while (1)
+	{
+		printf("请输入操作码：");
+		scanf("%d", &option);
 
+		switch (option)
+		{
+			//init
+			case 1:
+			{
+				initList(&list);
+			}break;
+
+			//add
+			case 2:
+			{
+
+			}break;
+
+			//delete
+			case 3:
+			{
+
+			}break;
+
+			//get index
+			case 4:
+			{
+
+			}break;
+
+			//list elements
+			case 5:
+			{
+				forEach(list);
+			}break;
+
+			//exit
+			case 0:
+			{
+				exit(0);
+			}break;
+		}
+	}
+
+	freeMem(list);
+	
 	system("pause");
 	return 0;
 }

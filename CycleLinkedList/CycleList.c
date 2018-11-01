@@ -14,10 +14,23 @@ typedef struct CycleLinkedList
 //free memory
 void freeMem(CycleList **list)
 {
+	//judge the list is null or not
+	if (list == NULL)
+	{
+		printf("NULL Pointer Exception!\n");
+		return -1;
+	}
+
 	CycleList *tmp = NULL;
 
 	while ((*list) != NULL)
 	{
+		//if no head node
+		if ((*list)->next == NULL)
+		{
+			break;
+		}
+
 		//if only a head
 		if ((*list)->next == (*list))
 		{
@@ -100,7 +113,7 @@ int initList(CycleList **list)
 
 	//create the head node
 	CycleList *head = (CycleList *)malloc(sizeof(CycleList));
-	head->prev = NULL;
+	head->prev = *list;
 	head->data = -1;
 	head->next = *list;
 
@@ -123,6 +136,7 @@ int initList(CycleList **list)
 			node->data = data;
 			node->prev = tmp;
 			node->next = head;
+			head->prev = node;
 			tmp->next = node;
 			tmp = node;
 		}
@@ -158,17 +172,17 @@ int add(CycleList **list, int index,int num)
 		//create a new node
 		CycleList *node = (CycleList *)malloc(sizeof(CycleList));
 		node->data = num;
-		node->prev = NULL;
+		node->prev = buffer->prev;
 		node->next = buffer;
 		buffer->prev = node;
 		(*list) = node;
 
 		//make the last node point to the new head node
-		while (temp->next != buffer)
+		/*while (temp->next != buffer)
 		{
 			temp = temp->next;
-		}
-		temp->next = (*list);
+		}*/
+		node->prev->next = (*list);
 	}
 	else
 	{
@@ -210,34 +224,83 @@ int deleteEle(CycleList **list, int index)
 	CycleList *tmp = (*list);
 	int i = 0;
 
-	while ((*list) != NULL)
+	//if only a head
+	if ((*list)->next == (*list))
 	{
-		//if delete the head
-		if ((*list)->next == (*list))
+		free((*list));
+		(*list) = NULL;
+	}
+	else
+	{
+		CycleList *buffer = (*list);
+		CycleList *tail = (*list)->prev;
+		//if delete the head node
+		if (i == index)
 		{
-			free((*list));
-			(*list) = NULL;
+			tail->next = buffer->next;
+			buffer->next->prev = tail;
+			if (buffer != NULL)
+			{
+				free(buffer);
+				buffer = NULL;
+			}
+			(*list) = tail->next;
 		}
 		else
 		{
-			
-			CycleList *buffer = (*list);
-			if (i == index)
+			while (buffer->next != buffer)
 			{
-				if (tmp->next != buffer)
+				if (i == index)
 				{
+					buffer->prev->next = buffer->next;
+					buffer->next->prev = buffer->prev;
+					if (buffer != NULL)
+					{
+						free(buffer);
+						buffer = NULL;
+					}
+					break;
 				}
-				else
-				{
-
-				}
+				buffer = buffer->next;
+				i++;
 			}
 		}
-		tmp = tmp->next;
-		i++;
 	}
 
+	forEach((*list));
+
 	return 0;
+}
+
+int get(CycleList *list, int data)
+{
+	//judge the list is null or not
+	if (list == NULL)
+	{
+		printf("NULL Pointer Exception!\n");
+		return -1;
+	}
+
+	int index = 0;
+	CycleList *tmp = list;
+
+	while (tmp!=NULL)
+	{
+		if (data == tmp->data)
+		{
+			break;
+		}
+		tmp = tmp->next;
+		if (tmp == list)
+		{
+			printf("\n没有该元素！\n");
+			index = -1;
+			break;
+		}
+		index++;
+	}
+
+	return index;
 }
 
 //init the screen
@@ -258,6 +321,9 @@ int main()
 	initScreen();
 	int option = 0;
 	CycleList *list = (CycleList *)malloc(sizeof(CycleList));
+	list->prev = NULL;
+	list->next = NULL;
+	list->data = 0;
 	
 	while (1)
 	{
@@ -287,13 +353,23 @@ int main()
 			//delete
 			case 3:
 			{
-
+				printf("\n请输入要删除的索引: ");
+				int index = 0;
+				scanf("%d", &index);
+				deleteEle(&list, index);
 			}break;
 
 			//get index
 			case 4:
 			{
-
+				printf("\n请输入要查找的元素: ");
+				int data = 0;
+				scanf("%d", &data);
+				int index = get(list, data);
+				if (index != -1)
+				{
+					printf("\n元素%d的索引为%d\n", data, index);
+				}
 			}break;
 
 			//list elements

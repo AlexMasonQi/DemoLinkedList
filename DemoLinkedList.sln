@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CycleLinkedList", "CycleLin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestProject", "TestProject\TestProject.vcxproj", "{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ADT", "ADT\ADT.vcxproj", "{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +73,14 @@ Global
 		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x64.Build.0 = Release|x64
 		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x86.ActiveCfg = Release|Win32
 		{D898BB6D-AE34-4C1C-B34F-08C5B64BC521}.Release|x86.Build.0 = Release|Win32
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Debug|x64.ActiveCfg = Debug|x64
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Debug|x64.Build.0 = Debug|x64
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Debug|x86.ActiveCfg = Debug|Win32
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Debug|x86.Build.0 = Debug|Win32
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Release|x64.ActiveCfg = Release|x64
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Release|x64.Build.0 = Release|x64
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Release|x86.ActiveCfg = Release|Win32
+		{DD0D7B36-12D3-4970-A8C0-4DB0933C2342}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
